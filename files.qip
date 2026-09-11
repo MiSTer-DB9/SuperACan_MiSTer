@@ -1,0 +1,97 @@
+# SYNTHESIS selects the altddio_out/altddio_in I/O-cell capture path in
+# rtl/mem/sdram.sv. Quartus does not define it on its own; without it the
+# fabric-clock simulation model is synthesized instead, and the DQ capture
+# depth in sdram.sv is tuned against the I/O-cell path.
+set_global_assignment -name VERILOG_MACRO "SYNTHESIS=1"
+
+# rtl/pll.qip is already pulled in by sys/pll_q17.qip; do not list it again.
+
+set_global_assignment -name SDC_FILE SuperAcan.sdc
+
+# Pin timing for the SDRAM controller, listed after SuperAcan.sdc so
+# derive_pll_clocks has already created the controller clock it derives from.
+set_global_assignment -name SDC_FILE rtl/mem/sdram.sdc
+
+set_global_assignment -name SYSTEMVERILOG_FILE SuperAcan.sv
+
+# Board
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/superacan_console.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/mainboard.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/mc68000.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/sram_async.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/ttl_74f08.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/ttl_74f32.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/ttl_74f14.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/ttl_7406.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/ttl_74ls164.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/clk_div.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/joypad.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/multitap.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/cart_loader.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/bios_loader.sv
+
+# UM6618
+set_global_assignment -name SEARCH_PATH rtl/um6618
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618_vtiming.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618_regs.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618_vram_arb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618_dma.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618_tilemap.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618_roz.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618_sprite.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618_window.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6618/um6618_mixer.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/um70c188.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/board/ka2195d.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/mem/cache_ram_be.sv
+
+# Cartridge
+set_global_assignment -name SEARCH_PATH rtl/cart
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cart/cart_slot.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cart/cart_16003_1b.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cart/mask_rom.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cart/um6650.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cart/ttl_74f688.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cart/ttl_74ls05.sv
+
+# UM6619
+set_global_assignment -name SEARCH_PATH rtl/um6619
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6619/um6619.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6619/um6619_cpu.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6619/um6619_dma.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6619/um6619_snd.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6619/um6619_overlay.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6619/um6619_irq.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6619/um6619_frc.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6619/um6619_iplrom.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/um6619/um6619_smprom.sv
+
+# Cheats
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cheats/acan_cheat_loader.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cheats/acan_cheat_engine.sv
+
+# Savestates
+set_global_assignment -name SEARCH_PATH rtl/ss
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/ss/savestates.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/ss/savestate_ui.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/ss/statemanager.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/ss/ss_reg.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/ss/ss_bulk.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/ss/ss_park.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/mem/save_slot.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/mem/ss_ddram.sv
+
+# Memory
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/mem/sdram.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/mem/sdram_bridge.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/mem/sync_xfer.sv
+set_global_assignment -name VERILOG_FILE rtl/mem/cache_ram.v
+
+# CPUs
+set_global_assignment -name QIP_FILE rtl/fx68k/fx68k.qip
+set_global_assignment -name QIP_FILE rtl/6502/mos6502.qip
+
+# fx68k loads microrom.mem and nanorom.mem with a bare $readmemb, so the
+# folder holding them has to be on the search path.
+set_global_assignment -name SEARCH_PATH rtl/fx68k
